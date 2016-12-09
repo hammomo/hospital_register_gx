@@ -22,28 +22,11 @@ public class LoginUI extends JFrame {
 
 	private LoginPanel contentPane;
 	private int screenX, screenY, frameX, frameY;
-	private JTextField textField;
-	private JPasswordField passwordField;
+	private JTextField txtUsername;
+	private JPasswordField pwdPassword;
+	private String username, password, id;
+	private JComboBox<String> comboBox;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginUI frame = new LoginUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public LoginUI() {
 		
 		
@@ -133,28 +116,71 @@ public class LoginUI extends JFrame {
 		lblID.setBounds(72, 124, 80, 30);
 		panel.add(lblID);
 		
-		textField = new JTextField();
-		textField.setToolTipText("请输入用户名");
-		textField.setBounds(177, 43, 170, 26);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtUsername = new JTextField();
+		txtUsername.setToolTipText("请输入用户名");
+		txtUsername.setBounds(177, 43, 170, 26);
+		panel.add(txtUsername);
+		txtUsername.setColumns(10);
 		
-		passwordField = new JPasswordField();
-		passwordField.setToolTipText("请输入密码");
-		passwordField.setBounds(177, 85, 170, 26);
-		panel.add(passwordField);
+		pwdPassword = new JPasswordField();
+		pwdPassword.setToolTipText("请输入密码");
+		pwdPassword.setBounds(177, 85, 170, 26);
+		panel.add(pwdPassword);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setToolTipText("请选择身份");
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"---选择身份---", "管理员", "挂号人员"}));
 		comboBox.setBounds(177, 128, 170, 26);
 		panel.add(comboBox);
 		
 		JButton btnLogin = new JButton("登录");
+		btnLogin.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				loginAction();
+			}
+		});
 		btnLogin.setToolTipText("登录");
 		btnLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		btnLogin.setBounds(162, 188, 117, 40);
 		panel.add(btnLogin);
 		contentPane.setLayout(gl_contentPane);
 	}
+	
+	@SuppressWarnings("deprecation")
+	public void loginAction() {
+		username = txtUsername.getText();
+		password = pwdPassword.getText();
+		id = (String) comboBox.getSelectedItem();
+		if (username == null || password == null || id.equals("---选择身份---")) System.out.println("you idiot!!!");
+		else System.out.println("Username: " + username + " Password: " + password + " id: " + id);
+		if (id.equals("管理员")) {
+			
+		} else if (id.equals("挂号人员")) {
+			dispose();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						RegisterMainUI register = new RegisterMainUI();
+						register.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LoginUI frame = new LoginUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 }
