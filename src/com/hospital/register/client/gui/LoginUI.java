@@ -29,13 +29,13 @@ public class LoginUI extends JFrame {
 
 	public LoginUI() {
 		
-		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				setLocation(frameX + (e.getXOnScreen() - screenX), frameY + (e.getYOnScreen() - screenY));
 			}
 		});
+		
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -160,7 +160,7 @@ public class LoginUI extends JFrame {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						RegisterMainUI register = new RegisterMainUI();
+						RegisterMainUI register = new RegisterMainUI("102");
 						register.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
