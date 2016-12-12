@@ -12,6 +12,8 @@ import java.awt.Font;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -24,32 +26,28 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Cursor;
 
 import com.hospital.register.client.common.RegisterInfo;
+import javax.swing.JPasswordField;
 
 public class RegisterMainUI extends JFrame {
 
 	private MainPanel contentPane;
 	private JTabbedPane tabbedPane;
-	private JPanel panel_1, panel_2;
+	private JPanel panel_1, panel_2, panel_3;
+	
 	private ButtonGroup bgGender;
 	private ButtonGroup bgClass;
+	
 	private static JTextField txtName;
 	private static JTextField txtAge;
 	private static JTextField txtTel;
 	private static JTextField txtPrice_1;
 	private static JTextField txtPrice_2;
 	private static JComboBox<String> comboBox_1, comboBox_2;
-	private static JRadioButton rClass;
-	private static JRadioButton rClass2;
-	private JRadioButton rClass_1;
-	private JRadioButton rClass_12;
-	private JRadioButton rClass_2;
-	private JRadioButton rClass_22;
+	private static JRadioButton rClass, rClass_1, rClass2, rClass_2, rClass_12, rClass_22;
 	private static JRadioButton rMale;
-	private JRadioButton rFemale;
-	
-	private int screenX, screenY, frameX, frameY;
-	public String name, gender, number, age, price,  telephone, office, classification;
 	private static JTextField txtID;
+	
+	private JRadioButton rFemale;
 	private JTextField textField;
 	private JLabel lblTitle;
 	private JLabel lblIDName;
@@ -65,6 +63,9 @@ public class RegisterMainUI extends JFrame {
 	private JLabel lblPrice_2;
 	private JLabel lblName_2;
 	
+	private int screenX, screenY, frameX, frameY;
+	public String name, gender, number, age, price,  telephone, office, classification;
+	private JPasswordField pwdOldpassword, pwdNewpassword, pwdConfirm;
 	
 	public RegisterMainUI(String id) {
 //		try {
@@ -157,10 +158,56 @@ public class RegisterMainUI extends JFrame {
 		
 		createSecondUI();
 	
-		JPanel panel_3 = new JPanel();
+		panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "\u4FEE\u6539\u5BC6\u7801", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_3.setOpaque(false);
 		tabbedPane.addTab("修改密码", null, panel_3, null);
+		panel_3.setLayout(null);
+		
+		createThirdUI();
+	}
+	
+	public void createThirdUI() {
+		pwdOldpassword = new JPasswordField();
+		pwdOldpassword.setText("");
+		pwdOldpassword.setBounds(469, 114, 270, 40);
+		panel_3.add(pwdOldpassword);
+		
+		JLabel lblOldPassword = new JLabel("    请输入旧密码：");
+		lblOldPassword.setFont(new Font("Arial", Font.PLAIN, 18));
+		lblOldPassword.setOpaque(true);
+		lblOldPassword.setBackground(new Color(221, 160, 221));
+		lblOldPassword.setBounds(292, 114, 482, 40);
+		panel_3.add(lblOldPassword);
+		
+		pwdNewpassword= new JPasswordField();
+		pwdNewpassword.setText("");
+		pwdNewpassword.setBounds(469, 154, 270, 40);
+		panel_3.add(pwdNewpassword);
+		
+		JLabel lblNewPassword = new JLabel("    请输入新密码：");
+		lblNewPassword.setFont(new Font("Arial", Font.PLAIN, 18));
+		lblNewPassword.setOpaque(true);
+		lblNewPassword.setBackground(new Color(255, 240, 245));
+		lblNewPassword.setBounds(292, 154, 482, 40);
+		panel_3.add(lblNewPassword);
+		
+		pwdConfirm= new JPasswordField();
+		pwdConfirm.setText("");
+		pwdConfirm.setBounds(469, 194, 270, 40);
+		panel_3.add(pwdConfirm);
+		
+		JLabel lblConfirm = new JLabel("    请确认新密码：");
+		lblConfirm.setFont(new Font("Arial", Font.PLAIN, 18));
+		lblConfirm.setOpaque(true);
+		lblConfirm.setBackground(new Color(221, 160, 221));
+		lblConfirm.setBounds(292, 194, 482, 40);
+		panel_3.add(lblConfirm);
+		
+		JButton btnSubmit_3 = new JButton("确认修改");
+		btnSubmit_3.setFont(new Font("Arial", Font.PLAIN, 18));
+		btnSubmit_3.setBounds(487, 254, 93, 40);
+		panel_3.add(btnSubmit_3);
 	}
 	
 	public void createFirstUI() {
@@ -316,6 +363,11 @@ public class RegisterMainUI extends JFrame {
 		textField.setBounds(420, 61, 343, 40);
 		panel_2.add(textField);
 		textField.setColumns(10);
+		textField.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) System.out.println(textField.getText());
+			}
+		});
 		
 		JLabel lblIDSearch = new JLabel("      身份证号：");
 		lblIDSearch.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -325,6 +377,11 @@ public class RegisterMainUI extends JFrame {
 		panel_2.add(lblIDSearch);
 		
 		JButton button = new JButton("搜索");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(textField.getText());
+			}
+		});
 		button.setFont(new Font("Arial", Font.PLAIN, 18));
 		button.setBackground(new Color(244, 164, 96));
 		button.setBounds(487, 113, 93, 40);
