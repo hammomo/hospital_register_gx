@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.net.Socket;
+
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -26,6 +28,8 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Cursor;
 
 import com.hospital.register.client.common.RegisterInfo;
+import com.hospital.register.client.common.UserClient;
+
 import javax.swing.JPasswordField;
 
 public class RegisterMainUI extends JFrame {
@@ -67,13 +71,20 @@ public class RegisterMainUI extends JFrame {
 	public String name, gender, number, age, price,  telephone, office, classification;
 	private JPasswordField pwdOldpassword, pwdNewpassword, pwdConfirm;
 	
-	public RegisterMainUI(String id) {
+	private Socket socket;
+	private UserClient uc;
+	
+	public RegisterMainUI(String id, Socket socket) {
 //		try {
 //			UIManager.setLookAndFeel(new NimbusLookAndFeel());
 //		} catch (UnsupportedLookAndFeelException e1) {
 //			// TODO Auto-generated catch block
 //			e1.printStackTrace();
 //		}
+		
+		this.socket = socket;
+		System.out.println(socket.getInetAddress().toString() + socket.getLocalPort());
+		uc = new UserClient(socket, id);
 		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -92,8 +103,8 @@ public class RegisterMainUI extends JFrame {
 		});
 		
 		setUndecorated(true);
-		setBackground(new Color(0, 0, 0, 0));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBackground(new Color(255, 255, 255, 0));
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1100, 700);
 		setLocationRelativeTo(null);
 		contentPane = new MainPanel();
@@ -206,7 +217,7 @@ public class RegisterMainUI extends JFrame {
 		
 		JButton btnSubmit_3 = new JButton("确认修改");
 		btnSubmit_3.setFont(new Font("Arial", Font.PLAIN, 18));
-		btnSubmit_3.setBounds(487, 254, 93, 40);
+		btnSubmit_3.setBounds(487, 254, 93, 50);
 		panel_3.add(btnSubmit_3);
 	}
 	
@@ -522,16 +533,4 @@ public class RegisterMainUI extends JFrame {
 		txtPrice_1.setText("");
 	}
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegisterMainUI frame = new RegisterMainUI("102");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 }

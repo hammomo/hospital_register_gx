@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.net.Socket;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -17,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
+import com.hospital.register.client.common.LoginClient;
 
 public class LoginUI extends JFrame {
 
@@ -156,17 +160,26 @@ public class LoginUI extends JFrame {
 		if (id.equals("管理员")) {
 			
 		} else if (id.equals("挂号人员")) {
-			dispose();
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						RegisterMainUI register = new RegisterMainUI("102");
-						register.setVisible(true);
-					} catch (Exception e) {
-						e.printStackTrace();
+			LoginClient lc = new LoginClient(username, password, id);
+			lc.openConnection();
+			lc.sendUserInfo();
+			lc.getServerRequest();
+			String userID = lc.getUserID();
+			System.out.println(userID);
+			Socket socket = lc.getSocket();
+			if (lc.getLoginResult()) {
+				dispose();
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							RegisterMainUI register = new RegisterMainUI(userID, socket);
+							register.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 	}
 	
