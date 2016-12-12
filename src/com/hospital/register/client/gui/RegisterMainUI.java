@@ -310,120 +310,6 @@ public class RegisterMainUI extends JFrame {
 		
 	}
 	
-	public void showRegisterTable() {
-		JLabel lblTitle = new JLabel("挂号单填写");
-		lblTitle.setOpaque(true);
-		lblTitle.setBackground(new Color(221, 160, 221));
-		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Arial", Font.PLAIN, 19));
-		lblTitle.setBounds(292, 61, 482, 54);
-		panel_1.add(lblTitle);
-		
-		txtName = new JTextField();
-		txtName.setBounds(469, 155, 214, 40);
-		panel_1.add(txtName);
-		txtName.setColumns(10);
-		
-		JLabel lblName = new JLabel("               病人姓名：");
-		lblName.setOpaque(true);
-		lblName.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblName.setBackground(new Color(221, 160, 221));
-		lblName.setBounds(292, 155, 482, 40);
-		panel_1.add(lblName);
-		
-		rMale = new JRadioButton("男");
-		rMale.setSelected(true);
-		rMale.setFont(new Font("Arial", Font.PLAIN, 16));
-		rMale.setBounds(469, 200, 68, 32);
-		panel_1.add(rMale);
-		
-		rFemale = new JRadioButton("女");
-		rFemale.setFont(new Font("Arial", Font.PLAIN, 16));
-		rFemale.setBounds(527, 200, 68, 32);
-		panel_1.add(rFemale);
-		
-		bgGender = new ButtonGroup();
-		bgGender.add(rMale);
-		bgGender.add(rFemale);
-		
-		JLabel lblGender = new JLabel("                      性别：");
-		lblGender.setOpaque(true);
-		lblGender.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblGender.setBackground(new Color(255, 240, 245));
-		lblGender.setBounds(292, 195, 482, 40);
-		panel_1.add(lblGender);
-		
-		txtAge = new JTextField();
-		txtAge.setColumns(10);
-		txtAge.setBounds(469, 235, 214, 40);
-		panel_1.add(txtAge);
-		
-		JLabel lblAge = new JLabel("                     年龄：                                               岁");
-		lblAge.setOpaque(true);
-		lblAge.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblAge.setBackground(new Color(221, 160, 221));
-		lblAge.setBounds(292, 235, 482, 40);
-		panel_1.add(lblAge);
-		
-		txtTel = new JTextField();
-		txtTel.setColumns(10);
-		txtTel.setBounds(469, 274, 270, 40);
-		panel_1.add(txtTel);
-		
-		comboBox_1 = new JComboBox<String>();
-		comboBox_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] {"-----请选择-----", "妇科", "儿科", "耳鼻喉科", "肠胃科", "泌尿科", "生殖科", "皮肤科"}));
-		comboBox_1.setBounds(469, 314, 174, 40);
-		panel_1.add(comboBox_1);
-		
-		JLabel lblOffice = new JLabel("              挂号科室：");
-		lblOffice.setOpaque(true);
-		lblOffice.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblOffice.setBackground(new Color(221, 160, 221));
-		lblOffice.setBounds(292, 314, 482, 40);
-		panel_1.add(lblOffice);
-		
-		rClass2 = new JRadioButton("普通");
-		rClass2.setSelected(true);
-		rClass2.setFont(new Font("Arial", Font.PLAIN, 16));
-		rClass2.setBounds(469, 363, 79, 23);
-		panel_1.add(rClass2);
-		
-		rClass_12 = new JRadioButton("急诊");
-		rClass_12.setFont(new Font("Arial", Font.PLAIN, 16));
-		rClass_12.setBounds(548, 363, 79, 23);
-		panel_1.add(rClass_12);
-		
-		rClass_22 = new JRadioButton("专家");
-		rClass_22.setFont(new Font("Arial", Font.PLAIN, 16));
-		rClass_22.setBounds(627, 363, 79, 23);
-		panel_1.add(rClass_22);
-		
-		bgClass = new ButtonGroup();
-		bgClass.add(rClass2);
-		bgClass.add(rClass_12);
-		bgClass.add(rClass_22);
-		
-		JLabel lblClass = new JLabel("              挂号类别：");
-		lblClass.setOpaque(true);
-		lblClass.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblClass.setBackground(new Color(255, 240, 245));
-		lblClass.setBounds(292, 354, 482, 40);
-		panel_1.add(lblClass);
-
-		txtPrice_2 = new JTextField();
-		txtPrice_2.setColumns(10);
-		txtPrice_2.setBounds(469, 395, 214, 40);
-		panel_1.add(txtPrice_2);
-		
-		JLabel label_1 = new JLabel("                     价格：                                               元");
-		label_1.setOpaque(true);
-		label_1.setFont(new Font("Arial", Font.PLAIN, 18));
-		label_1.setBackground(new Color(221, 160, 221));
-		label_1.setBounds(292, 395, 482, 40);
-		panel_1.add(label_1);
-	}
-	
 	public void createSecondUI() {
 		textField = new JTextField();
 		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
@@ -541,10 +427,10 @@ public class RegisterMainUI extends JFrame {
 		age = txtAge.getText();
 		telephone = txtTel.getText();
 		office = (String) comboBox_1.getSelectedItem();
-		if (rClass2.isSelected()) classification = rClass2.getText();
-		else if (rClass_12.isSelected()) classification = rClass_12.getText();
-		else classification = rClass_22.getText();
-		price = txtPrice_2.getText();
+		if (rClass.isSelected()) classification = rClass.getText();
+		else if (rClass_1.isSelected()) classification = rClass_1.getText();
+		else if (rClass_2.isSelected()) classification = rClass_2.getText();
+		price = txtPrice_1.getText();
 		System.out.println("------所有病人信息------");
 		System.out.println("病志号： " + number);
 		System.out.println("病人姓名： " + name);
@@ -575,8 +461,8 @@ public class RegisterMainUI extends JFrame {
 		txtAge.setText("");
 		txtTel.setText("");
 		comboBox_1.setSelectedIndex(0);
-		rClass2.setSelected(true);
-		txtPrice_2.setText("");
+		rClass.setSelected(true);
+		txtPrice_1.setText("");
 	}
 	
 	public static void main(String[] args) {
