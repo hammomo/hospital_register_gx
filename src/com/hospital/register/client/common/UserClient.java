@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class UserClient {
 
-	private String username, userID;
+	private String userID;
 	private Socket socket;
 	private InputStream in;
 	private OutputStream out;
@@ -51,7 +51,8 @@ public class UserClient {
 		}
 	}
 	
-	public void sendPatientInfo(RegisterInfo ri) {
+	public String sendPatientInfo(RegisterInfo ri) {
+		String patientID = "";
 		send("/r/" + userID);
 		send(ri.getID());
 		send(ri.getName());
@@ -61,6 +62,12 @@ public class UserClient {
 		send(ri.getOffice());
 		send(ri.getClassification());
 		send(ri.getPrice());
+		try {
+			patientID = inFromServer.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return patientID;
 	}
 	
 	

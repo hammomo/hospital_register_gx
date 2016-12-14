@@ -1,8 +1,11 @@
 package com.hospital.register.mysqlconn;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.hospital.register.server.GlobalData;
+import com.hospital.register.server.PatientInfo;
 
 public class MySQLConnect {
 	
@@ -17,6 +20,8 @@ public class MySQLConnect {
 	private static Connection conn = null;
 	private static Statement stmt = null;
 	private static ResultSet rs = null;
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public static void getConnected() {
 		try {
@@ -36,7 +41,7 @@ public class MySQLConnect {
 	
 	public static void createUser(int userID, String username, String password, String truename) {
 		getConnected();
-		System.out.println("Connected to MySQL with Database chatto_demo to insert user.");
+		System.out.println("Connected to MySQL with Database hospital_register to insert user.");
 		String sql = "INSERT INTO users (id, username, password, truename) VALUES (" + userID + ", '" + username + "', md5('" + password + "'),'" + truename +"')";
 		try {
 			stmt.execute(sql);
@@ -78,6 +83,24 @@ public class MySQLConnect {
 			e.printStackTrace();
 		}
 		return id;
+	}
+	
+	public static void createPatient(PatientInfo pi, int userid, int type) {
+		getConnected();
+		System.out.println();
+		Date d= new Date();
+		String today = sdf.format(d);
+		String sql = "";
+		if (type == 1) {
+			sql = "INSERT INTO patients (number, id, name, gender, age, telephone, office, classification, price, userid, daytime, type) VALUES ('" + pi.getNumber() + "', '" + pi.getID() + "', '" + pi.getName() + "','" + pi.getGender() + "', '" + pi.getAge() + "', '" + pi.getTelephone() + "', '" + pi.getOffice() + "', '" + pi.getClassification() + "', '" + pi.getPrice() + "', '" + userid + "', '" + today + "', '" +  "初诊')";
+		} else if (type == 2) {
+			sql = "INSERT INTO patients (number, id, name, gender, age, telephone, office, classification, price, userid, daytime, type) VALUES ('" + pi.getNumber() + "', '" + pi.getID() + "', '" + pi.getName() + "','" + pi.getGender() + "', '" + pi.getAge() + "', '" + pi.getTelephone() + "', '" + pi.getOffice() + "', '" + pi.getClassification() + "', '" + pi.getPrice() + "', '" + userid + "', '" + today + "', '" +  "复诊')";
+		}
+		try {
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main (String[] args) {

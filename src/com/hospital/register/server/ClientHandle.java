@@ -22,6 +22,7 @@ public class ClientHandle extends Thread {
 	private PrintWriter pw = null;
 	private boolean running = false;
 	private String username, password, userID;
+	private int userid;
 	
 	public ClientHandle(Socket socket) {
 		this.socket = socket;
@@ -45,17 +46,7 @@ public class ClientHandle extends Thread {
 					userID = getUserID(str);
 					send(userID);
 				} else if (str.startsWith("/r/")) {
-					System.out.println("I've got information from user " + userID);
-					String id = br.readLine();
-					String name = br.readLine();
-					String gender = br.readLine();
-					String age = br.readLine();
-					String telephone = br.readLine();
-					String office = br.readLine();
-					String classification = br.readLine();
-					String price = br.readLine();
-					PatientInfo pi = new PatientInfo(id, name, gender, age, telephone, office, classification, price);
-					System.out.println(pi.getID() + pi.getName() + pi.getGender() + pi.getAge() + pi.getTelephone() + pi.getOffice() + pi.getClassification() + pi.getPrice());
+					handlePatientInfo();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -63,6 +54,26 @@ public class ClientHandle extends Thread {
 			}
 		}
 		closeResources();
+	}
+	
+	public void handlePatientInfo() {
+		try {
+			System.out.println("I've got information from user " + userID);
+			String id = br.readLine();
+			String name = br.readLine();
+			String gender = br.readLine();
+			String age = br.readLine();
+			String telephone = br.readLine();
+			String office = br.readLine();
+			String classification = br.readLine();
+			String price = br.readLine();
+			PatientInfo pi = new PatientInfo(id, name, gender, age, telephone, office, classification, price);
+			pi.setNumber(PatientID.getPatientID());
+			MySQLConnect.createPatient(pi, userid, 1);
+			send(pi.getNumber());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void closeResources() {
@@ -101,8 +112,8 @@ public class ClientHandle extends Thread {
 	
 	public String getUserID(String str) {
 		String username = str.substring(4);
-		int userID = MySQLConnect.getUserID(username);
-		return userID + "";
+		userid = MySQLConnect.getUserID(username);
+		return userid + "";
 	}
 	
 	public boolean createResources() {

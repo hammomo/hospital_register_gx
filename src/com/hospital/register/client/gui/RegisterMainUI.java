@@ -72,8 +72,8 @@ public class RegisterMainUI extends JFrame {
 	private JPasswordField pwdOldpassword, pwdNewpassword, pwdConfirm;
 	
 	private Socket socket;
-	private UserClient uc;
-	private RegisterInfo ri;
+	private static UserClient uc;
+	private static RegisterInfo ri;
 	
 	public RegisterMainUI(String id, Socket socket) {
 //		try {
@@ -383,7 +383,7 @@ public class RegisterMainUI extends JFrame {
 			}
 		});
 		
-		JLabel lblIDSearch = new JLabel("      身份证号：");
+		JLabel lblIDSearch = new JLabel("      挂号单号：");
 		lblIDSearch.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblIDSearch.setOpaque(true);
 		lblIDSearch.setBackground(new Color(221, 160, 221));
@@ -512,12 +512,12 @@ public class RegisterMainUI extends JFrame {
 		System.out.println("类型： " + classification);
 		System.out.println("价格： " + price);
 		ri = new RegisterInfo(number, name, gender, age, telephone, office, classification, price);
-		uc.sendPatientInfo(ri);
+		String number = uc.sendPatientInfo(ri);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegisterTable frame = new RegisterTable(ri, "102");
+					RegisterTable frame = new RegisterTable(ri, number);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

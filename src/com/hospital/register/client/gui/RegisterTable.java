@@ -35,11 +35,12 @@ public class RegisterTable extends JFrame {
 	private JLabel lblOffice;
 	private JLabel lblClass;
 	private JLabel lblPrice;
-	private String id;
+	private String number;
+	private JPanel panel;
 
-	public RegisterTable(RegisterInfo ri, String id) {
+	public RegisterTable(RegisterInfo ri, String number) {
 		
-		this.id = id;
+		this.number = number;
 		
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,11 +56,11 @@ public class RegisterTable extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "\u6302\u53F7\u5355", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "挂号单", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridwidth = 3;
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
@@ -200,43 +201,23 @@ public class RegisterTable extends JFrame {
 		panel.setLayout(gl_panel);
 		
 		JButton btnPrint = new JButton("打印");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegisterMainUI.reset();
+				dispose();
+			}
+		});
 		GridBagConstraints gbc_btnPrint = new GridBagConstraints();
-		gbc_btnPrint.insets = new Insets(0, 0, 0, 5);
 		gbc_btnPrint.anchor = GridBagConstraints.NORTHEAST;
-		gbc_btnPrint.gridx = 0;
+		gbc_btnPrint.gridx = 2;
 		gbc_btnPrint.gridy = 1;
 		contentPane.add(btnPrint, gbc_btnPrint);
-		
-		JButton btnEdit = new JButton("修改");
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		GridBagConstraints gbc_btnEdit = new GridBagConstraints();
-		gbc_btnEdit.insets = new Insets(0, 0, 0, 5);
-		gbc_btnEdit.gridx = 1;
-		gbc_btnEdit.gridy = 1;
-		contentPane.add(btnEdit, gbc_btnEdit);
-		
-		JButton btnExit = new JButton("保存");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-//				RegisterMainUI.sendPatientInfoToServer();
-				RegisterMainUI.reset();
-			}
-		});
-		GridBagConstraints gbc_btnExit = new GridBagConstraints();
-		gbc_btnExit.anchor = GridBagConstraints.NORTH;
-		gbc_btnExit.gridx = 2;
-		gbc_btnExit.gridy = 1;
-		contentPane.add(btnExit, gbc_btnExit);
 		
 		setInfo(ri);
 	}
 	
 	public void setInfo(RegisterInfo ri) {
+		panel.setBorder(new TitledBorder(null, "挂号单-" + number, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		lblID.setText(ri.getID());
 		lblName.setText(ri.getName());
 		lblGender.setText(ri.getGender());
