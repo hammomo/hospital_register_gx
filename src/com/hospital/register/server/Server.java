@@ -70,7 +70,6 @@ public class Server implements Runnable {
 					try {
 						String str = inFromClient.readLine();
 						System.out.println(str);
-						if (str == null) break;
 						if (str.startsWith("/c/")) {
 							str = str.substring(3);
 							username = inFromClient.readLine();
@@ -82,8 +81,14 @@ public class Server implements Runnable {
 							int userID = MySQLConnect.getUserID(str);
 							pw.write(userID + "\n");
 							pw.flush();
-						} else {
-							
+						} else if (str.startsWith("/q/")){
+							System.out.println("The user " + username + " login on " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort() + " is about to login off...");
+//							if (pw != null) pw.close();
+//							if (out != null) out.close();
+//							if (inFromClient != null) inFromClient.close();
+//							if (in != null) in.close();
+							if (clientSocket != null) clientSocket.close();
+							break;
 						}
 					} catch (IOException e) {
 						e.printStackTrace();

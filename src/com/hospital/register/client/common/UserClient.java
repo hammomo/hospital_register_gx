@@ -34,9 +34,13 @@ public class UserClient {
 		}
 	}
 	
-	public void closeResources() {
-		pw.write("/q/\n");
+	public void send(String str) {
+		pw.write(str + "\n");
 		pw.flush();
+	}
+	
+	public void closeResources() {
+		send("/q/");
 		try {
 			inFromServer.close();
 			in.close();
@@ -46,4 +50,6 @@ public class UserClient {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

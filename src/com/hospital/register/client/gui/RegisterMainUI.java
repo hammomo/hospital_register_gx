@@ -123,6 +123,7 @@ public class RegisterMainUI extends JFrame {
 		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				uc.closeResources();
 				System.exit(0);
 			}
 		});
