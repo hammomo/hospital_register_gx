@@ -51,5 +51,17 @@ public class UserClient {
 		}
 	}
 	
+	public void sendPatientInfo(RegisterInfo ri) {
+		send("/r/" + userID);
+		send(ri.getID());
+		send(ri.getName());
+		send(ri.getGender());
+		send(ri.getAge());
+		send(ri.getTelephone());
+		send(ri.getOffice());
+		send(ri.getClassification());
+		send(ri.getPrice());
+	}
+	
 	
 }

@@ -219,10 +219,11 @@ public class RegisterTable extends JFrame {
 		gbc_btnEdit.gridy = 1;
 		contentPane.add(btnEdit, gbc_btnEdit);
 		
-		JButton btnExit = new JButton("退出");
+		JButton btnExit = new JButton("保存");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+//				RegisterMainUI.sendPatientInfoToServer();
 				RegisterMainUI.reset();
 			}
 		});

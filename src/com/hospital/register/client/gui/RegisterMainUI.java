@@ -73,6 +73,7 @@ public class RegisterMainUI extends JFrame {
 	
 	private Socket socket;
 	private UserClient uc;
+	private RegisterInfo ri;
 	
 	public RegisterMainUI(String id, Socket socket) {
 //		try {
@@ -124,6 +125,7 @@ public class RegisterMainUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				uc.closeResources();
+				System.out.println("I've closed resources and sent close information to server...");
 				System.exit(0);
 			}
 		});
@@ -509,7 +511,8 @@ public class RegisterMainUI extends JFrame {
 		System.out.println("科室： " + office);
 		System.out.println("类型： " + classification);
 		System.out.println("价格： " + price);
-		RegisterInfo ri = new RegisterInfo(number, name, gender, age, telephone, office, classification, price);
+		ri = new RegisterInfo(number, name, gender, age, telephone, office, classification, price);
+		uc.sendPatientInfo(ri);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -522,6 +525,10 @@ public class RegisterMainUI extends JFrame {
 			}
 		});
 	}
+	
+//	public static void sendPatientInfoToServer() {
+//		uc.sendPatientInfo(ri);
+//	}
 	
 	public static void reset() {
 		txtID.setText("");
