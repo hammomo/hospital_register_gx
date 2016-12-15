@@ -46,7 +46,11 @@ public class ClientHandle extends Thread {
 					userID = getUserID(str);
 					send(userID);
 				} else if (str.startsWith("/r/")) {
-					handlePatientInfo();
+					handlePatientInfo_1();
+				} else if (str.startsWith("/2/")) {
+					getPatientInfo(str);
+				} else if (str.startsWith("/r2/")) {
+					handlePatientInfo_2();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -56,7 +60,19 @@ public class ClientHandle extends Thread {
 		closeResources();
 	}
 	
-	public void handlePatientInfo() {
+	public void getPatientInfo(String str) {
+		String patientNumber = str.substring(3);
+		System.out.println("The patient number is " + patientNumber);
+		PatientInfo patient_2 = MySQLConnect.getPatientInfo(patientNumber);
+		send(patient_2.getID());
+		send(patient_2.getName());
+		send(patient_2.getGender());
+		send(patient_2.getAge());
+		send(patient_2.getTelephone());
+	}
+	
+	public PatientInfo handlePatientInfo() {
+		PatientInfo pi = null;
 		try {
 			System.out.println("I've got information from user " + userID);
 			String id = br.readLine();
@@ -67,13 +83,24 @@ public class ClientHandle extends Thread {
 			String office = br.readLine();
 			String classification = br.readLine();
 			String price = br.readLine();
-			PatientInfo pi = new PatientInfo(id, name, gender, age, telephone, office, classification, price);
+			pi = new PatientInfo(id, name, gender, age, telephone, office, classification, price);	
 			pi.setNumber(PatientID.getPatientID());
-			MySQLConnect.createPatient(pi, userid, 1);
-			send(pi.getNumber());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return pi;
+	}
+	
+	public void handlePatientInfo_1() {
+		PatientInfo pi = handlePatientInfo();
+		MySQLConnect.createPatient(pi, userid, 1);
+		send(pi.getNumber());
+	}
+	
+	public void handlePatientInfo_2() {
+		PatientInfo pi = handlePatientInfo();
+		MySQLConnect.createPatient(pi, userid, 2);
+		send(pi.getNumber());
 	}
 	
 	public void closeResources() {

@@ -103,6 +103,29 @@ public class MySQLConnect {
 		}
 	}
 	
+	public static PatientInfo getPatientInfo(String number) {
+		String id = null;
+		String name = null;
+		String gender = null;
+		String age = null;
+		String telephone = null;
+		getConnected();
+		String sql = "SELECT * FROM patients WHERE number = '" + number + "'";
+		try {
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				id = rs.getString("id");
+				name = rs.getString("name");
+				gender = rs.getString("gender");
+				age = rs.getString("age");
+				telephone = rs.getString("telephone");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new PatientInfo(id, name, gender, age, telephone);
+	}
+	
 	public static void main (String[] args) {
 		// for test
 //		System.out.println(checkPassword("mohanyi", "password"));

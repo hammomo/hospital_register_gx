@@ -18,7 +18,6 @@ public class MainPanel extends JPanel {
 		try {
 			background = ImageIO.read(getClass().getResource("seaside.jpg"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

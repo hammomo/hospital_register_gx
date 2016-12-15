@@ -51,9 +51,18 @@ public class UserClient {
 		}
 	}
 	
+	public String sendPatientInfo_1(RegisterInfo ri) {
+		send("/r/" + userID);
+		return sendPatientInfo(ri);
+	}
+	
+	public String sendPatientInfo_2(RegisterInfo ri) {
+		send("/r2/" + userID);
+		return sendPatientInfo(ri);
+	}
+	
 	public String sendPatientInfo(RegisterInfo ri) {
 		String patientID = "";
-		send("/r/" + userID);
 		send(ri.getID());
 		send(ri.getName());
 		send(ri.getGender());
@@ -68,6 +77,26 @@ public class UserClient {
 			e.printStackTrace();
 		}
 		return patientID;
+	}
+	
+	public RegisterInfo secondRegister(String number) {
+		send("/2/" + number);
+		String id = null;
+		String name = null;
+		String gender = null;
+		String age = null;
+		String telephone = null;
+		try {
+			id = inFromServer.readLine();
+			name = inFromServer.readLine();
+			gender = inFromServer.readLine();
+			age = inFromServer.readLine();
+			telephone = inFromServer.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		RegisterInfo secondRegister = new RegisterInfo(id, name, gender, age, telephone);
+		return secondRegister;
 	}
 	
 	

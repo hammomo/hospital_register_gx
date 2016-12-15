@@ -15,6 +15,14 @@ public class PatientInfo {
 		this.price = price;
 	}
 	
+	public PatientInfo(String id, String name, String gender, String age, String telephone) {
+		this.ID = id;
+		this.name = name;
+		this.gender = gender;
+		this.age = age;
+		this.telephone = telephone;
+	}
+	
 	public void setNumber(String number) {
 		this.number = number;
 	}

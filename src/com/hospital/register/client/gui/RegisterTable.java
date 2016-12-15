@@ -203,7 +203,6 @@ public class RegisterTable extends JFrame {
 		JButton btnPrint = new JButton("打印");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegisterMainUI.reset();
 				dispose();
 			}
 		});
