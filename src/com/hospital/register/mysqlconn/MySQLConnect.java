@@ -50,6 +50,25 @@ public class MySQLConnect {
 		}
 	}
 	
+	public static boolean updatePass(int userid, String oldPass, String newPass) {
+		boolean result = false;
+		getConnected();
+		String sql = "SELECT * FROM users WHERE id = " + userid;
+		String sql_2 = "UPDATE users SET password = md5('" + newPass + "') WHERE id = " + userid;
+		try {
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				if (!rs.getString("password").equals(MD5Password.MD5(oldPass))) return result;
+			}
+			stmt.execute(sql_2);
+			result = true;
+		} catch (SQLException e) {
+			result = false;
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public static boolean checkPassword(String username, String password) {
 		boolean result = false;
 		getConnected();

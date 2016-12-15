@@ -51,6 +51,8 @@ public class ClientHandle extends Thread {
 					getPatientInfo(str);
 				} else if (str.startsWith("/r2/")) {
 					handlePatientInfo_2();
+				} else if (str.startsWith("/u/")) {
+					handlePassword();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -58,6 +60,17 @@ public class ClientHandle extends Thread {
 			}
 		}
 		closeResources();
+	}
+	
+	public void handlePassword() {
+		try {
+			String oldPass = br.readLine();
+			String newPass = br.readLine();
+			boolean result = MySQLConnect.updatePass(userid, oldPass, newPass);
+			send(result + "");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void getPatientInfo(String str) {

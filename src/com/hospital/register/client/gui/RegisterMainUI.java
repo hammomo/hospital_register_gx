@@ -10,6 +10,8 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -76,6 +78,7 @@ public class RegisterMainUI extends JFrame {
 	private RegisterInfo ri;
 	private RegisterInfo secondRegister = null;
 	private String name_1, name_2, name_3, name_4, name_5;
+	private String oldPass, newPass_1, newPass_2;
 	
 	public RegisterMainUI(String id, Socket socket) {
 //		try {
@@ -221,6 +224,26 @@ public class RegisterMainUI extends JFrame {
 		panel_3.add(lblConfirm);
 		
 		JButton btnSubmit_3 = new JButton("确认修改");
+		btnSubmit_3.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+				oldPass = pwdOldpassword.getText();
+				newPass_1 = pwdNewpassword.getText();
+				newPass_2 = pwdConfirm.getText();
+				if (!newPass_1.equals(newPass_2)) {
+					System.out.println("两个密码不相同！");
+					JOptionPane.showMessageDialog(null, "两个密码不相同！", "提示", JOptionPane.ERROR_MESSAGE);
+				} else {
+					boolean result = uc.updatePassword(oldPass, newPass_1);
+					if (result) {
+						JOptionPane.showMessageDialog(null, "密码修改成功！", "提示", JOptionPane.DEFAULT_OPTION);
+					} else {
+						JOptionPane.showMessageDialog(null, "输入的旧密码错误！", "提示", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				
+			}
+		});
 		btnSubmit_3.setFont(new Font("Arial", Font.PLAIN, 18));
 		btnSubmit_3.setBounds(487, 254, 93, 50);
 		panel_3.add(btnSubmit_3);
@@ -576,11 +599,11 @@ public class RegisterMainUI extends JFrame {
 		String number = textField.getText();
 		System.out.println(number);
 		RegisterInfo secondRegister = uc.secondRegister(number);
-		lblID.setText(lblID.getText() + " " + secondRegister.getID());
-		lblName_2.setText(lblName_2.getText() + " " + secondRegister.getName());
-		lblGender_2.setText(lblGender_2.getText() + " " + secondRegister.getGender());
-		lblAge_2.setText(lblAge_2.getText() + "  " + secondRegister.getAge());
-		lblTel_2.setText(lblTel_2.getText() + " " + secondRegister.getTelephone());
+		lblID.setText(name_1 + " " + secondRegister.getID());
+		lblName_2.setText(name_2 + " " + secondRegister.getName());
+		lblGender_2.setText(name_3 + " " + secondRegister.getGender());
+		lblAge_2.setText(name_4 + "  " + secondRegister.getAge());
+		lblTel_2.setText(name_5 + " " + secondRegister.getTelephone());
 		return secondRegister;
 	}
 	

@@ -99,5 +99,17 @@ public class UserClient {
 		return secondRegister;
 	}
 	
+	public boolean updatePassword(String oldPass, String newPass) {
+		send("/u/");
+		send(oldPass);
+		send(newPass);
+		boolean result = false;
+		try {
+			result = Boolean.parseBoolean(inFromServer.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }
