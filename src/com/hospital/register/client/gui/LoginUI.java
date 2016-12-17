@@ -157,6 +157,7 @@ public class LoginUI extends JFrame {
 		if (username == null || password == null || id.equals("---选择身份---")) System.out.println("you idiot!!!");
 		else System.out.println("Username: " + username + " Password: " + password + " id: " + id);
 		if (id.equals("管理员")) {
+			// 进入管理员界面
 			
 		} else if (id.equals("挂号人员")) {
 			LoginClient lc = new LoginClient(username, password, id);

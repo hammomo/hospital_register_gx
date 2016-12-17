@@ -329,7 +329,7 @@ public class RegisterMainUI extends JFrame {
 		comboBox_1 = new JComboBox<String>();
 		comboBox_1.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		comboBox_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] {"---请选择---", "妇科", "儿科", "耳鼻喉科", "肠胃科", "泌尿科", "生殖科", "皮肤科"}));
+		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] {"---请选择---", "妇科", "儿科", "耳鼻喉科", "肠胃科", "泌尿科", "生殖科", "皮肤科", "妇产科", "普通内科", "普通外科"}));
 		comboBox_1.setBounds(469, 314, 174, 40);
 		panel_1.add(comboBox_1);
 		
