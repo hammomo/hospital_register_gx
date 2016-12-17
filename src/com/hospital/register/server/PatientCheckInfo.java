@@ -1,4 +1,4 @@
-package com.hospital.register.client.common;
+package com.hospital.register.server;
 
 import java.io.Serializable;
 
@@ -81,4 +81,3 @@ public class PatientCheckInfo implements Serializable {
 		return date;
 	}
 }
-

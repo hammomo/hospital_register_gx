@@ -19,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import com.hospital.register.client.common.AdminClient;
 import com.hospital.register.client.common.LoginClient;
 
 public class LoginUI extends JFrame {
@@ -158,8 +159,27 @@ public class LoginUI extends JFrame {
 		else System.out.println("Username: " + username + " Password: " + password + " id: " + id);
 		if (id.equals("管理员")) {
 			// 进入管理员界面
+			LoginClient lc = new LoginClient(username, password, id);
+			lc.openConnection();
+			lc.sendUserInfo();
+			lc.getServerRequest();
+			Socket socket = lc.getSocket();
+			if (lc.getLoginResult()) {
+				dispose();
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							AdminMainUI adminGUI = new AdminMainUI(new AdminClient(socket));
+							adminGUI.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
 			
 		} else if (id.equals("挂号人员")) {
+			// 进入挂号人员界面
 			LoginClient lc = new LoginClient(username, password, id);
 			lc.openConnection();
 			lc.sendUserInfo();

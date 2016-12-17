@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,14 +17,18 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import com.hospital.register.client.common.AdminClient;
 import com.hospital.register.client.common.PatientCheckInfo;
 
 import java.awt.GridLayout;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
@@ -39,6 +44,7 @@ import javax.swing.JCheckBox;
 import javax.swing.AbstractListModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 
 public class AdminMainUI extends JFrame {
 
@@ -47,9 +53,34 @@ public class AdminMainUI extends JFrame {
 	private JPanel panel_1, panel_2;
 	private JTextField txtDate;
 	private JTable table;
-	private List<PatientCheckInfo> patients = new ArrayList<PatientCheckInfo>();
+//	private List<PatientCheckInfo> patients = new ArrayList<PatientCheckInfo>();
+
+	private AdminClient ac;
+	private Vector<String> colHeader;
+	private Vector<Vector<String>> dataVec;
+	private List<PatientCheckInfo> patients;
 	
-	public AdminMainUI() {
+	private int screenX, screenY, frameX, frameY;
+	
+	public AdminMainUI(AdminClient ac) {
+		
+		this.ac = ac;
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				setLocation(frameX + (e.getXOnScreen() - screenX), frameY + (e.getYOnScreen() - screenY));
+			}
+		});
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				screenX = e.getXOnScreen();
+				screenY = e.getYOnScreen();
+				frameX = getX();
+				frameY = getY();
+			}
+		});
 		
 		setUndecorated(true);
 		setBackground(new Color(255, 255, 255, 0));
@@ -71,6 +102,8 @@ public class AdminMainUI extends JFrame {
 		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// 客户端退出逻辑
+				ac.closeResources();
 				System.exit(0);
 			}
 		});
@@ -105,7 +138,7 @@ public class AdminMainUI extends JFrame {
 		txtDate = new JTextField();
 		txtDate.setBounds(275, 47, 181, 32);
 		txtDate.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		txtDate.setText("2016-12-15");
+		txtDate.setText("2016-12-17");
 		txtDate.setColumns(10);
 		
 		JLabel lblOffice = new JLabel("科室：");
@@ -133,19 +166,8 @@ public class AdminMainUI extends JFrame {
 		c2.setBounds(797, 47, 72, 32);
 		panel_1.add(c2);
 		
-		JButton btnCheck = new JButton("查询");
-		btnCheck.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btnCheck.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		btnCheck.setBounds(881, 46, 117, 37);
-		panel_1.add(btnCheck);
-		
-		
-		
-		Vector<String> colHeader = new Vector<String>();  
+		// 设置表格列名
+		colHeader = new Vector<String>();  
         colHeader.add("病志号");  
         colHeader.add("病人姓名");  
         colHeader.add("性别");  
@@ -156,60 +178,54 @@ public class AdminMainUI extends JFrame {
         colHeader.add("价格");
         colHeader.add("初复诊");
         colHeader.add("挂号人员");
-        
-        PatientCheckInfo pci = new PatientCheckInfo("900657579795", "郭鑫", "男", "20", "18030647761", "泌尿科", "专家", "50", "2016-12-14", "初诊", "莫晗依");
-        PatientCheckInfo pci2 = new PatientCheckInfo("900617494390", "陈炎", "男", "20", "15928924546", "耳鼻喉科" , "普通", "10", "2016-12-15", "复诊", "郭鑫");
-        patients.add(pci);
-        patients.add(pci2);
-        
-        Vector<Vector<String>> dataVec = new Vector<Vector<String>>();  
-        for (int i = 0; i < patients.size(); i++) {
-        	PatientCheckInfo patient = patients.get(i);
-        	Vector<String> row = new Vector<String>();
-        	row.add(patient.getNumber());  
-            row.add(patient.getName());  
-            row.add(patient.getGender());
-            row.add(patient.getAge());
-            row.add(patient.getTelephone());
-            row.add(patient.getOffice());
-            row.add(patient.getClassification());
-            row.add(patient.getPrice());
-            row.add(patient.getType());
-            row.add(patient.getUsername());
-            dataVec.add(row);
-        }  
+		        
         
         
-//        Vector<String> row2 = new Vector<String>();  
-//        row2.add("0002");  
-//        row2.add("小强");  
-//        row2.add("男");  
-//        row2.add(new Date().toString());  
-//        Vector<String> row3 = new Vector<String>();  
-//        row3.add("0003");  
-//        row3.add("韦小宝");  
-//        row3.add("女");  
-//        row3.add(new Date().toString());  
-//        Vector<String> row4 = new Vector<String>();  
-//        row4.add("0004");  
-//        row4.add("零零七");  
-//        row4.add("男");  
-//        row4.add(new Date().toString());  
-//            
-//        dataVec.add(row2);  
-//        dataVec.add(row3);  
-//        dataVec.add(row4);  
-        
-        JTable table = new JTable(dataVec,colHeader);
+		JButton btnCheck = new JButton("查询");
+		btnCheck.setFocusable(false);
+		btnCheck.setFocusTraversalKeysEnabled(false);
+		btnCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 查询
+				// 设置表格行数据
+		        dataVec = new Vector<Vector<String>>();
+				patients = new ArrayList<PatientCheckInfo>();
+				String date = txtDate.getText();
+				String office = cbOffice.getSelectedItem().toString();
+				int select = 0;
+				if (c1.isSelected() && !c2.isSelected()) select = 1;
+				if (!c1.isSelected() && c2.isSelected()) select = 2;
+				if (c1.isSelected() && c2.isSelected() || !c1.isSelected() && !c2.isSelected()) select = 3;
+				if (select == 1) {
+					System.out.println("查询日期：" + date + " 查询科室：" + office + " 初／复诊：初诊");
+				} else if (select == 2) {
+					System.out.println("查询日期：" + date + " 查询科室：" + office + " 初／复诊：复诊");
+				} else if (select == 3) {
+					System.out.println("查询日期：" + date + " 查询科室：" + office + " 初／复诊：全部");
+				} else {
+					System.out.println("错误");
+				}
+				List<PatientCheckInfo> list = ac.sendCheckInfo(date, office, select);
+				for (int i = 0; i < list.size(); i++) {
+					patients.add(list.get(i));
+				}
+				createTable();
+			}
+		});
+		btnCheck.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		btnCheck.setBounds(881, 46, 117, 37);
+		panel_1.add(btnCheck);
+		
+		table = new JTable(dataVec,colHeader);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.setBackground(new Color(230, 230, 250));
         table.setFont(new Font("Arial", Font.PLAIN, 17));
-        JScrollPane scrollPane = new JScrollPane(); 
+        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(69, 113, 929, 427);
         scrollPane.setViewportView(table);  
         panel_1.add(scrollPane);
 		
-      //设置列宽  
+        // 设置表格格式
         table.getColumnModel().getColumn(0).setPreferredWidth(140);  
         table.getColumnModel().getColumn(1).setPreferredWidth(65);  
         table.getColumnModel().getColumn(2).setPreferredWidth(50);  
@@ -228,6 +244,10 @@ public class AdminMainUI extends JFrame {
 		tabbedPane.addTab("增添用户", null, panel_2, null);
 		panel_2.setLayout(null);
 		
+		createSecondUI();
+	}
+	
+	public void createSecondUI() {
 		JTextField txtUsername = new JTextField();
 		txtUsername.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		txtUsername.setColumns(10);
@@ -241,7 +261,7 @@ public class AdminMainUI extends JFrame {
 		lblUsername.setFont(new Font("Arial", Font.PLAIN, 18));
 		panel_2.add(lblUsername);
 		
-		JTextField txtPass = new JTextField();
+		JPasswordField txtPass = new JPasswordField();
 		txtPass.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		txtPass.setColumns(10);
 		txtPass.setBounds(450, 154, 270, 40);
@@ -254,7 +274,7 @@ public class AdminMainUI extends JFrame {
 		lblPass.setFont(new Font("Arial", Font.PLAIN, 18));
 		panel_2.add(lblPass);
 		
-		JTextField txtConfirm = new JTextField();
+		JPasswordField txtConfirm = new JPasswordField();
 		txtConfirm.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		txtConfirm.setColumns(10);
 		txtConfirm.setBounds(450, 194, 270, 40);
@@ -282,7 +302,29 @@ public class AdminMainUI extends JFrame {
 		
 		JButton btnSubmit = new JButton("提交");
 		btnSubmit.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
+				// 增加用户
+				String username = txtUsername.getText();
+				String password = txtPass.getText();
+				String confirm = txtConfirm.getText();
+				String truename = txtTruename.getText();
+				if (!password.equals(confirm)) {
+					JOptionPane.showMessageDialog(null, "两个密码不相同！", "提示", JOptionPane.ERROR_MESSAGE);
+					txtPass.setText("");
+					txtConfirm.setText("");
+				} else {
+					boolean result = ac.createNewUser(username, password, truename);
+					if (result) {
+						JOptionPane.showMessageDialog(null, "创建成功！", "提示", JOptionPane.DEFAULT_OPTION);
+					} else {
+						JOptionPane.showMessageDialog(null, "创建失败！", "提示", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				txtUsername.setText("");
+				txtPass.setText("");
+				txtConfirm.setText("");
+				txtTruename.setText("");
 			}
 		});
 		btnSubmit.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -290,16 +332,58 @@ public class AdminMainUI extends JFrame {
 		panel_2.add(btnSubmit);
 	}
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminMainUI frame = new AdminMainUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public void createTable() {
+		for (int i = 0; i < patients.size(); i++) {
+			System.out.println(i);
+        	PatientCheckInfo patient = patients.get(i);
+        	Vector<String> row = new Vector<String>();
+        	System.out.println(patient.getNumber() + patient.getName() + patient.getGender() + patient.getAge() + patient.getTelephone() + patient.getOffice() + patient.getClassification() + patient.getPrice() + patient.getType() + patient.getUsername());
+        	row.add(patient.getNumber());  
+            row.add(patient.getName());  
+            row.add(patient.getGender());
+            row.add(patient.getAge());
+            row.add(patient.getTelephone());
+            row.add(patient.getOffice());
+            row.add(patient.getClassification());
+            row.add(patient.getPrice());
+            row.add(patient.getType());
+            row.add(patient.getUsername());
+            dataVec.add(row);
+        }
+		
+		table = new JTable(dataVec,colHeader);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.setBackground(new Color(230, 230, 250));
+        table.setFont(new Font("Arial", Font.PLAIN, 17));
+        JScrollPane scrollPane = new JScrollPane(); 
+        scrollPane.setBounds(69, 113, 929, 427);
+        scrollPane.setViewportView(table);  
+        panel_1.add(scrollPane);
+		
+        // 设置表格格式
+        table.getColumnModel().getColumn(0).setPreferredWidth(140);  
+        table.getColumnModel().getColumn(1).setPreferredWidth(65);  
+        table.getColumnModel().getColumn(2).setPreferredWidth(50);  
+        table.getColumnModel().getColumn(3).setPreferredWidth(50);
+        table.getColumnModel().getColumn(4).setPreferredWidth(110);
+        table.getColumnModel().getColumn(5).setPreferredWidth(65);
+        table.getColumnModel().getColumn(6).setPreferredWidth(50);
+        table.getColumnModel().getColumn(7).setPreferredWidth(50);
+        table.getColumnModel().getColumn(8).setPreferredWidth(50);
+        table.getColumnModel().getColumn(9).setPreferredWidth(50);
+        table.setRowHeight(24);
 	}
+	
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					AdminMainUI frame = new AdminMainUI();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 }

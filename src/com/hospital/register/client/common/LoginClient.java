@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 
 public class LoginClient {
 	
-	private String username, password, identity, userID;
+	private String username, password, identity;
 	private Socket clientSocket;
 	private String address;
 	private int port;
@@ -25,7 +25,8 @@ public class LoginClient {
 		this.username = username;
 		this.password = password;
 		if (identity.equals("挂号人员")) this.identity = "user";
-		this.address = GlobalData.ADDRESS;
+		else if (identity.equals("管理员")) this.identity = "admin";
+ 		this.address = GlobalData.ADDRESS;
 		this.port = GlobalData.PORT;
 	}
 	

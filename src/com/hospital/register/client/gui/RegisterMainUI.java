@@ -233,15 +233,20 @@ public class RegisterMainUI extends JFrame {
 				if (!newPass_1.equals(newPass_2)) {
 					System.out.println("两个密码不相同！");
 					JOptionPane.showMessageDialog(null, "两个密码不相同！", "提示", JOptionPane.ERROR_MESSAGE);
+					pwdNewpassword.setText("");
+					pwdConfirm.setText("");
 				} else {
 					boolean result = uc.updatePassword(oldPass, newPass_1);
 					if (result) {
 						JOptionPane.showMessageDialog(null, "密码修改成功！", "提示", JOptionPane.DEFAULT_OPTION);
 					} else {
 						JOptionPane.showMessageDialog(null, "输入的旧密码错误！", "提示", JOptionPane.ERROR_MESSAGE);
+						pwdOldpassword.setText("");
 					}
 				}
-				
+				pwdOldpassword.setText("");
+				pwdNewpassword.setText("");
+				pwdConfirm.setText("");
 			}
 		});
 		btnSubmit_3.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -471,7 +476,7 @@ public class RegisterMainUI extends JFrame {
 		comboBox_2 = new JComboBox<String>();
 		comboBox_2.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		comboBox_2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		comboBox_2.setModel(new DefaultComboBoxModel<String>(new String[] {"---请选择---", "妇科", "儿科", "耳鼻喉科", "肠胃科", "泌尿科", "生殖科", "皮肤科"}));
+		comboBox_2.setModel(new DefaultComboBoxModel<String>(new String[] {"---请选择---", "妇科", "儿科", "耳鼻喉科", "肠胃科", "泌尿科", "生殖科", "皮肤科", "妇产科", "普通内科", "普通外科"}));
 		comboBox_2.setBounds(469, 365, 174, 40);
 		panel_2.add(comboBox_2);
 		

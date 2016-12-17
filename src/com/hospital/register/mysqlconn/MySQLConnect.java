@@ -2,9 +2,12 @@ package com.hospital.register.mysqlconn;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.hospital.register.server.GlobalData;
+import com.hospital.register.server.PatientCheckInfo;
 import com.hospital.register.server.PatientInfo;
 
 public class MySQLConnect {
@@ -39,15 +42,19 @@ public class MySQLConnect {
 		}
 	}
 	
-	public static void createUser(int userID, String username, String password, String truename) {
+	public static boolean createUser(int userID, String username, String password, String truename) {
+		boolean result = false;
 		getConnected();
 		System.out.println("Connected to MySQL with Database hospital_register to insert user.");
 		String sql = "INSERT INTO users (id, username, password, truename) VALUES (" + userID + ", '" + username + "', md5('" + password + "'),'" + truename +"')";
 		try {
 			stmt.execute(sql);
+			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			result = false;
 		}
+		return result;
 	}
 	
 	public static boolean updatePass(int userid, String oldPass, String newPass) {
@@ -69,10 +76,16 @@ public class MySQLConnect {
 		return result;
 	}
 	
-	public static boolean checkPassword(String username, String password) {
+	public static boolean checkPassword(String username, String password, String identity) {
 		boolean result = false;
 		getConnected();
-		String sql = "SELECT * FROM users WHERE username = '" + username + "'";
+		String sql = "";
+		if (identity.equals("user")) {
+			sql = "SELECT * FROM users WHERE username = '" + username + "'";
+		} else if (identity.equals("admin")) {
+			sql = "SELECT * FROM admin WHERE username = '" + username + "'";
+		}
+		
 		try {
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -143,6 +156,51 @@ public class MySQLConnect {
 			e.printStackTrace();
 		}
 		return new PatientInfo(id, name, gender, age, telephone);
+	}
+	
+	public static List<PatientCheckInfo> getPatients(String date, String office, String select) {
+		List<PatientCheckInfo> patients = new ArrayList<PatientCheckInfo>();
+		List<Integer> userids = new ArrayList<Integer>();
+		String sql = "";
+		getConnected();
+		if (office.equals("所有科室")) {
+			if (select.equals("1")) {
+				sql = "SELECT * FROM patients WHERE daytime = '" + date +"' AND type = '初诊'"; 
+			} else if (select.equals("2")) {
+				sql = "SELECT * FROM patients WHERE daytime = '" + date +"' AND type = '复诊'"; 
+			} else if (select.equals("3")) {
+				sql = "SELECT * FROM patients WHERE daytime = '" + date +"'"; 
+			}
+		} else {
+			if (select.equals("1")) {
+				sql = "SELECT * FROM patients WHERE daytime = '" + date + "' AND office = '" + office + "' AND type = '初诊'";
+			} else if (select.equals("2")) {
+				sql = "SELECT * FROM patients WHERE daytime = '" + date + "' AND office = '" + office + "' AND type = '复诊'";
+			} else if (select.equals("3")) {
+				sql = "SELECT * FROM patients WHERE daytime = '" + date + "' AND office = '" + office + "'";
+			}
+		}
+		try {
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				patients.add(new PatientCheckInfo(rs.getString("number"), rs.getString("name"), rs.getString("gender"), rs.getString("age"), rs.getString("telephone"), rs.getString("office"), rs.getString("classification"), rs.getString("price"), rs.getString("daytime"), rs.getString("type")));
+				userids.add(rs.getInt("userid"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		for (int i = 0; i < patients.size(); i++) {
+			String sql2 = "SELECT truename FROM users WHERE id = '" + userids.get(i) + "'";
+			try {
+				rs = stmt.executeQuery(sql2);
+				while (rs.next()) {
+					patients.get(i).setUsername(rs.getString("truename"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return patients;
 	}
 	
 	public static void main (String[] args) {

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 import com.hospital.register.mysqlconn.MySQLConnect;
 
@@ -40,7 +41,7 @@ public class ClientHandle extends Thread {
 					break;
 				}
 				if (str.startsWith("/c/")) {
-					boolean loginResult = login();
+					boolean loginResult = login(str);
 					send(loginResult + "");
 				} else if (str.startsWith("/id/")) {
 					userID = getUserID(str);
@@ -53,6 +54,17 @@ public class ClientHandle extends Thread {
 					handlePatientInfo_2();
 				} else if (str.startsWith("/u/")) {
 					handlePassword();
+				} else if (str.startsWith("/i/")) {
+					handleCheckInfo(str);
+				} else if (str.startsWith("/new/")) {
+					String s = str.substring(5);
+					String[] info = s.split("/n/");
+					String username = info[0];
+					String password = info[1];
+					String truename = info[2];
+					int userid = UserID.getIdentifier();
+					boolean result = MySQLConnect.createUser(userid, username, password, truename);
+					send(result + "");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -60,6 +72,21 @@ public class ClientHandle extends Thread {
 			}
 		}
 		closeResources();
+	}
+	
+	public void handleCheckInfo(String str) {
+		str = str.substring(3);
+		String[] info = str.split("/n/");
+		String date = info[0];
+		String office = info[1];
+		String select = info[2];
+		List<PatientCheckInfo> patients = MySQLConnect.getPatients(date, office, select);
+		System.out.println("patients size is " + patients.size());
+		for (int i = 0; i < patients.size(); i++) {
+			PatientCheckInfo p = patients.get(i);
+			send(p.getNumber() + "/n/" + p.getName() + "/n/" + p.getGender() + "/n/" + p.getAge() + "/n/" + p.getTelephone() + "/n/" + p.getOffice() + "/n/" + p.getClassification() + "/n/" + p.getPrice() + "/n/" + p.getDate() + "/n/" + p.getType() + "/n/" + p.getUsername());
+		}
+		send("/end/");
 	}
 	
 	public void handlePassword() {
@@ -118,15 +145,15 @@ public class ClientHandle extends Thread {
 	
 	public void closeResources() {
 		try {
-			if(pw != null)
+			if (pw != null)
 				pw.close();
-			if(os != null)
+			if (os != null)
 				os.close();
-			if(br != null)
+			if (br != null)
 				br.close();
-			if(is != null)
+			if (is != null)
 				is.close();
-			if(socket != null)
+			if (socket != null)
 				socket.close();
 			System.out.println("I've close resources for current client...");
 		} catch (IOException e) {
@@ -139,11 +166,12 @@ public class ClientHandle extends Thread {
 		pw.flush();
 	}
 	
-	public boolean login() {
+	public boolean login(String str) {
 		try {
+			String identity = str.substring(3);
 			username = br.readLine();
 			password = br.readLine();
-			return MySQLConnect.checkPassword(username, password);
+			return MySQLConnect.checkPassword(username, password, identity);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
