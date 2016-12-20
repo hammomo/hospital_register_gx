@@ -1,7 +1,6 @@
 package com.hospital.register.client.gui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,10 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,30 +18,20 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
-import com.hospital.register.client.common.AdminClient;
-import com.hospital.register.client.common.PatientCheckInfo;
-
-import java.awt.GridLayout;
-import javax.swing.JList;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.JOptionPane;
-
-import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
 import javax.swing.JComboBox;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ListModel;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
-import javax.swing.AbstractListModel;
-import javax.swing.border.EtchedBorder;
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import com.hospital.register.client.common.AdminClient;
+import com.hospital.register.client.common.PatientCheckInfo;
 
 public class AdminMainUI extends JFrame {
 
@@ -64,6 +51,12 @@ public class AdminMainUI extends JFrame {
 	
 	public AdminMainUI(AdminClient ac) {
 		
+//		try {
+//			UIManager.setLookAndFeel(new NimbusLookAndFeel());
+//		} catch (UnsupportedLookAndFeelException e1) {
+//			e1.printStackTrace();
+//		}
+	
 		this.ac = ac;
 		
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -218,8 +211,8 @@ public class AdminMainUI extends JFrame {
 		
 		table = new JTable(dataVec,colHeader);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.setBackground(new Color(230, 230, 250));
-        table.setFont(new Font("Arial", Font.PLAIN, 17));
+//        table.setBackground(new Color(230, 230, 250));
+//        table.setFont(new Font("Arial", Font.PLAIN, 17));
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(69, 113, 929, 427);
         scrollPane.setViewportView(table);  
@@ -373,17 +366,5 @@ public class AdminMainUI extends JFrame {
         table.getColumnModel().getColumn(9).setPreferredWidth(50);
         table.setRowHeight(24);
 	}
-	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AdminMainUI frame = new AdminMainUI();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+
 }

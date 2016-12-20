@@ -22,7 +22,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
@@ -81,6 +84,7 @@ public class RegisterMainUI extends JFrame {
 	private String oldPass, newPass_1, newPass_2;
 	
 	public RegisterMainUI(String id, Socket socket) {
+		
 //		try {
 //			UIManager.setLookAndFeel(new NimbusLookAndFeel());
 //		} catch (UnsupportedLookAndFeelException e1) {
@@ -250,7 +254,7 @@ public class RegisterMainUI extends JFrame {
 			}
 		});
 		btnSubmit_3.setFont(new Font("Arial", Font.PLAIN, 18));
-		btnSubmit_3.setBounds(487, 254, 93, 50);
+		btnSubmit_3.setBounds(489, 256, 109, 50);
 		panel_3.add(btnSubmit_3);
 	}
 	

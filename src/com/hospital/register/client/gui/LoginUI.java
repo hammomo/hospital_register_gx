@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -13,14 +15,19 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
 import com.hospital.register.client.common.AdminClient;
 import com.hospital.register.client.common.LoginClient;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class LoginUI extends JFrame {
 
@@ -32,6 +39,13 @@ public class LoginUI extends JFrame {
 	private JComboBox<String> comboBox;
 
 	public LoginUI() {
+		
+//		try {
+//			UIManager.setLookAndFeel(new NimbusLookAndFeel());
+//		} catch (UnsupportedLookAndFeelException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -60,7 +74,7 @@ public class LoginUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblTitle = new JLabel("在线挂号系统登录");
+		JLabel lblTitle =new JLabel("在线挂号系统登录");
 		lblTitle.setForeground(new Color(230, 230, 250));
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 18));
 		
@@ -80,25 +94,26 @@ public class LoginUI extends JFrame {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(153, Short.MAX_VALUE)
-					.addComponent(lblTitle)
-					.addGap(111)
-					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap(147, Short.MAX_VALUE)
+							.addComponent(lblTitle)
+							.addGap(104))
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
-				.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(btnExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(7)
-							.addComponent(lblTitle)))
+					.addGap(7)
+					.addComponent(lblTitle)
 					.addGap(5)
 					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(286, Short.MAX_VALUE))
 		);
 		panel.setLayout(null);
 		
@@ -176,6 +191,10 @@ public class LoginUI extends JFrame {
 						}
 					}
 				});
+			} else {
+				JOptionPane.showMessageDialog(null, "管理员登录失败", "提示", JOptionPane.ERROR_MESSAGE);
+				txtUsername.setText("");
+				pwdPassword.setText("");
 			}
 			
 		} else if (id.equals("挂号人员")) {
@@ -199,6 +218,10 @@ public class LoginUI extends JFrame {
 						}
 					}
 				});
+			} else {
+				JOptionPane.showMessageDialog(null, "挂号人员登录失败", "提示", JOptionPane.ERROR_MESSAGE);
+				txtUsername.setText("");
+				pwdPassword.setText("");
 			}
 		}
 	}

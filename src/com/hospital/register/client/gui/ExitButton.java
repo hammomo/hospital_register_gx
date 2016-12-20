@@ -18,9 +18,7 @@ public class ExitButton extends BasicButtonUI {
 		try {
 			exit = ImageIO.read(getClass().getResource("exit.png"));
 			exitPressed = ImageIO.read(getClass().getResource("05.png"));
-//			exitFocused = ImageIO.read(getClass().getResource("07.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
